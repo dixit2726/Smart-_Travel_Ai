@@ -1,0 +1,63 @@
+id,name,tier,cost,district,lat,lon
+1,Taj Banjara,Premium,6200.0,Hyderabad,17.4096457,78.4488565
+2,Amrutha Castle,Mid,3200.0,Hyderabad,17.4075442,78.4688643
+3,Hotel Golkonda,Mid,3400.0,Hyderabad,17.404432,78.4536723
+4,Ohri's Baseraa Inn,Mid,2800.0,Hyderabad,17.4050875,78.4765247
+5,Hotel Katriya Fortune,Mid,2900.0,Hyderabad,17.4247273,78.4595863
+6,Hotel balaji residency,Mid,2400.0,Hyderabad,17.4002376,78.489839
+7,New Asian Lodge,Budget,1040.0,Hyderabad,17.3934221,78.4700066
+8,Hotel Udipi,Mid,2525.0,Hyderabad,17.3915447,78.4687256
+9,Hotel sai pariwer,Budget,920.0,Hyderabad,17.3914523,78.4937783
+10,Sherton hotel.,Mid,2650.0,Hyderabad,17.3912153,78.5113885
+11,Hotel Royal Plaza,Mid,2575.0,Hyderabad,17.3902956,78.4644485
+12,Royal Plaza Hotel,Budget,950.0,Hyderabad,17.3913246,78.4654418
+13,Hotel Hill Park Inn,Mid,2525.0,Hyderabad,17.4024961,78.4620102
+14,Sri brindavan hotel,Mid,2725.0,Hyderabad,17.3887013,78.4758551
+15,Hotel Caspia Pro Banjara Hills,Budget,1090.0,Hyderabad,17.417216,78.4538643
+16,Hotel Hyderabad heights lodging,Premium,4850.0,Hyderabad,17.4037334,78.4531059
+17,Oyo Hotel Rainbow Saphire,Mid,2600.0,Hyderabad,17.4025597,78.4624669
+18,Hotel Alekhya Residency,Mid,2500.0,Hyderabad,17.4065018,78.4651073
+19,Park Continental Hotel,Budget,920.0,Hyderabad,17.3992892,78.4487276
+20,Sri Venkateshwara Hotel,Mid,2525.0,Hyderabad,17.4047646,78.4645005
+21,OYO 18968 Lorgan Residency,Mid,2450.0,Hyderabad,17.3933429,78.4714261
+22,Gandhi Bhavan Hotel,Budget,900.0,Hyderabad,17.3791827,78.4747354
+23,Jewel Residency Lodge,Budget,1060.0,Hyderabad,17.3802824,78.4752348
+24,Hotel Siddhartha,Budget,900.0,Hyderabad,17.3858176,78.4786033
+25,Sherton hotel,Budget,1010.0,Hyderabad,17.3914841,78.5127906
+26,Red Rose Palace,Premium,5350.0,Hyderabad,17.3956223,78.4715958
+27,Pummy Lodge,Budget,980.0,Hyderabad,17.4258957,78.4531897
+28,Imran hotel,Budget,910.0,Hyderabad,17.3780001,78.4501876
+29,RCC Hotels Majestic - LB Nagar,Premium,4550.0,Hyderabad,17.3408922,78.5211651
+30,Royal Residency,Mid,2400.0,Hyderabad,17.402932,78.4629554
+31,Apsara hotel,Premium,5200.0,Hyderabad,17.3894012,78.4726316
+32,Itsy Hotels Arastu Inn,Mid,2375.0,Hyderabad,17.3978868,78.4628501
+33,Lemon Tree Hotel Banjara Hills,Premium,4800.0,Hyderabad,17.4119227,78.4504172
+34,Rajdhani hotel,Premium,5400.0,Hyderabad,17.3777137,78.4749284
+35,Hampshire Plaza Hotel,Mid,3300.0,Hyderabad,17.4051740383416,78.46459827008961
+36,Hotel Dwaraka,Mid,2475.0,Hyderabad,17.4055962768202,78.46414898827344
+37,Peppermint Hotel,Mid,2700.0,Hyderabad,17.4063064813011,78.46318456342618
+38,Hotel Pearl Regency,Mid,2450.0,Hyderabad,17.402565516845808,78.46315259522473
+39,Radisson Blu Plaza Hotel,Premium,6800.0,Hyderabad,17.422258721400222,78.44133209616892
+40,Katriya Hotel & Towers,Mid,3100.0,Hyderabad,17.4247428,78.45947745000001
+41,NKM's Grand Hotel,Premium,5150.0,Hyderabad,17.417211382946594,78.4556832236518
+42,OYO Imax Inn,Mid,2550.0,Hyderabad,17.3826205864332,78.47333007027304
+43,Taj Mahal Hotel,Premium,5100.0,Hyderabad,17.391655471100453,78.47682014712645
+44,Hotel Abode,Premium,4650.0,Hyderabad,17.405245849999996,78.46509205
+45,Hotel Venkateswara,Budget,1000.0,Hyderabad,17.404801164373573,78.46482078944753
+46,Hyderabad Mercure KCP,Premium,5200.0,Hyderabad,17.417718957380952,78.45669605992065
+47,Bismillah hotel,Mid,2300.0,Hyderabad,17.381633387925458,78.50226552567548
+48,"TSTDC Haritha Heritage Hotel & Resort, Basara",Budget,1400.0,Nirmal,18.8775,77.9542
+49,TSTDC Haritha Hotel Nizamabad,Mid,2200.0,Nizamabad,18.675,78.09
+50,Hotel Nikhil Sai International,Mid,2500.0,Nizamabad,18.678,78.092
+51,"TSTDC Haritha Kakatiya Hotel, Warangal",Mid,2600.0,Hanumakonda,18.0035,79.5745
+52,TSTDC Haritha Resort Palampet (Ramappa),Mid,2400.0,Mulugu,18.2565,79.943
+53,TSTDC Haritha Lake View Resort Laknavaram,Mid,2800.0,Mulugu,18.1485,80.0605
+54,TSTDC Haritha Hotel Yadadri,Mid,2300.0,Yadadri Bhuvanagiri,17.589,78.949
+55,TSTDC Haritha Heritage Hotel Medak,Budget,1500.0,Medak,18.0438,78.262
+56,TSTDC Haritha Hotel Khammam,Mid,2100.0,Khammam,17.2475,80.1465
+57,TSTDC Haritha Hotel Bhadrachalam,Mid,2400.0,Bhadradri Kothagudem,17.6695,80.888
+58,TSTDC Haritha Hotel Karimnagar,Mid,2200.0,Karimnagar,18.4355,79.0375
+59,TSTDC Haritha Hotel Gadwal,Budget,1400.0,Jogulamba Gadwal,16.231,77.8015
+60,TSTDC Haritha Hotel Srisailam / Somasila,Budget,1600.0,Nagarkurnool,16.041,78.3035
+61,"Golkonda Resort & Spa, Gandipet",Premium,7500.0,Ranga Reddy,17.3825,78.2985
+62,"Ananthagiri Hills Resort, Vikarabad",Mid,2500.0,Vikarabad,17.312,77.866
