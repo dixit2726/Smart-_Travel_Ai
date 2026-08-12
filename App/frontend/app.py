@@ -463,7 +463,7 @@ st.set_page_config(
 apply_custom_css()
 
 # API Configuration
-BACKEND_API_URL = os.getenv("BACKEND_API_URL", os.getenv("FASTAPI_URL", "http://127.0.0.1:8000")).rstrip('/')
+BACKEND_API_URL = os.getenv("BACKEND_API_URL", os.getenv("FASTAPI_URL", "https://smart-travel-ai-7.onrender.com/")).rstrip('/')
 FASTAPI_URL = BACKEND_API_URL
 
 @st.cache_data(ttl=60, show_spinner=False)
