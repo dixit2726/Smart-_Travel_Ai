@@ -62,12 +62,13 @@ def run_pipeline(user: UserInput) -> dict:
     )
 
     # Selected spot lat/lon lookup from dataset
-    spot_name = user.spot_name or (recommendations[0]["spot_name"] if recommendations else None)
-    if not spot_name:
+    raw_spot_name = user.spot_name or (recommendations[0]["spot_name"] if recommendations else None)
+    if not raw_spot_name:
         raise HTTPException(status_code=400, detail="No valid spot_name specified or found in dataset.")
 
+    first_spot_name = raw_spot_name.split(",")[0].strip() if "," in raw_spot_name else raw_spot_name.strip()
     spots_found = get_spots(district=user.destination_district)
-    selected_spot = next((s for s in spots_found if s["name"].lower() == spot_name.lower()), None)
+    selected_spot = next((s for s in spots_found if s["name"].lower() == first_spot_name.lower()), None)
     if not selected_spot:
         if spots_found:
             selected_spot = spots_found[0]
@@ -84,6 +85,7 @@ def run_pipeline(user: UserInput) -> dict:
 
     result_payload = {
         "selected_spot": selected_spot,
+        "spot_name": raw_spot_name,
         "predicted_climate": predicted_climate,
         "predicted_visitors": predicted_visitors,
         "estimated_budget": estimated_budget,
@@ -95,7 +97,7 @@ def run_pipeline(user: UserInput) -> dict:
     # 4. Save trip history
     trip_data = {
         "travel_date": user.travel_date,
-        "spot_name": selected_spot["name"],
+        "spot_name": raw_spot_name,
         "district": user.destination_district,
         "category": user.category,
         "season": season,

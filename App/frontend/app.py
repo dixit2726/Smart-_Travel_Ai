@@ -1995,7 +1995,9 @@ elif selected_page == "Smart Trip Planner":
                 try:
                     primary_spot = st.session_state["selected_spots_list"][0]
                     sel_district = st.session_state["selected_district"]
-                    sel_category = primary_spot.get("category", "heritage")
+                    all_spot_names = ", ".join([s["name"] for s in st.session_state["selected_spots_list"]])
+                    all_categories_str = ", ".join(list(dict.fromkeys([s.get("category", "heritage") for s in st.session_state["selected_spots_list"] if s.get("category")])))
+                    sel_category = all_categories_str
 
                     # 1. Climate Prediction (PyTorch LSTM)
                     climate_res = predict_climate(
@@ -2088,6 +2090,8 @@ elif selected_page == "Smart Trip Planner":
                         "selected_district": sel_district,
                         "selected_spots": st.session_state["selected_spots_list"],
                         "primary_spot": primary_spot,
+                        "spot_name": all_spot_names,
+                        "category": all_categories_str,
                         "travel_start": str(travel_start),
                         "travel_end": str(travel_end),
                         "num_travelers": int(num_travelers),
@@ -2111,9 +2115,9 @@ elif selected_page == "Smart Trip Planner":
                     # Auto-save trip record to Supabase / SQLite (Internal raw visitor count persisted)
                     save_trip_record({
                         "travel_date": travel_start,
-                        "spot_name": primary_spot["name"],
+                        "spot_name": all_spot_names,
                         "district": sel_district,
-                        "category": sel_category,
+                        "category": all_categories_str,
                         "season": season,
                         "transport": transport_mode.lower(),
                         "travelers": int(num_travelers),
@@ -2170,11 +2174,13 @@ elif selected_page == "Smart Trip Planner":
             # TAB 1: OVERVIEW
             # ----------------------------------------------
             with res_tabs[0]:
+                all_spots_display = res.get("spot_name") or (", ".join([s["name"] for s in res.get("selected_spots", [])]) if res.get("selected_spots") else res.get("primary_spot", {}).get("name", ""))
                 st.markdown(f"""
                     <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between;">
                         <div>
                             <span class="badge-blue">{res['selected_district'].upper()} ITINERARY</span>
                             <h2 style="color: #F8FAFC; font-weight: 800; margin: 8px 0 4px 0;">{len(res['selected_spots'])} Tourist Destinations Selected</h2>
+                            <p style="color: #38BDF8; font-weight: 600; font-size: 0.98rem; margin: 0 0 6px 0;">📍 Spots: {all_spots_display}</p>
                             <p style="color: #94A3B8; font-size: 1.05rem;">Dates: <b>{res['travel_start']}</b> to <b>{res['travel_end']}</b> ({res['duration_days']} Days) | Travelers: <b>{res['num_travelers']}</b> | Mode: <b>{res['transport_mode']}</b></p>
                         </div>
                         <div style="text-align: right;">
@@ -2252,11 +2258,13 @@ elif selected_page == "Smart Trip Planner":
 
                     if save_clicked:
                         try:
+                            spot_name_to_save = res.get("spot_name") or (", ".join([s["name"] for s in res.get("selected_spots", [])]) if res.get("selected_spots") else res.get("primary_spot", {}).get("name", "Tourist Destination"))
+                            category_to_save = res.get("category") or (", ".join(list(dict.fromkeys([s.get("category", "heritage") for s in res.get("selected_spots", [])]))) if res.get("selected_spots") else res.get("primary_spot", {}).get("category", "heritage"))
                             save_payload = {
                                 "travel_date": res.get("travel_start"),
-                                "spot_name": res.get("primary_spot", {}).get("name", "Tourist Destination"),
+                                "spot_name": spot_name_to_save,
                                 "district": res.get("selected_district"),
-                                "category": res.get("primary_spot", {}).get("category", "heritage"),
+                                "category": category_to_save,
                                 "season": res.get("predicted_climate", {}).get("season", "Winter"),
                                 "transport": str(res.get("transport_mode", "car")).lower(),
                                 "travelers": res.get("num_travelers", 1),
@@ -3029,7 +3037,8 @@ elif selected_page == "Smart Trip Planner":
 
                 # Weather Advisory Card
                 primary_spot_obj = res.get("primary_spot", {})
-                selected_spot_name = primary_spot_obj.get("name", "Selected Tourist Spot")
+                primary_spot_name = primary_spot_obj.get("name", "Selected Tourist Spot")
+                selected_spot_name = res.get("spot_name") or (", ".join([s["name"] for s in res.get("selected_spots", [])]) if res.get("selected_spots") else primary_spot_name)
 
                 st.markdown(f"""
                     <div class="glass-card" style="margin-top: 20px; margin-bottom: 25px;">
@@ -3077,7 +3086,7 @@ elif selected_page == "Smart Trip Planner":
 
                         # Fetch dynamic trip forecast dataframe for exact travel dates
                         sel_district_val = res.get("selected_district") if isinstance(res, dict) else None
-                        fc_res = get_trip_climate_forecast(selected_spot_name, start_str, end_str, district_name=sel_district_val)
+                        fc_res = get_trip_climate_forecast(primary_spot_name, start_str, end_str, district_name=sel_district_val)
 
                         if isinstance(fc_res, str) and fc_res == "EXCEEDS_LIMIT":
                             st.warning("⚠️ The selected trip date range exceeds the maximum supported forecast horizon (up to 60 days duration / 1 year into future). Please select dates within the supported horizon.")
@@ -3218,11 +3227,13 @@ elif selected_page == "Smart Trip Planner":
 
                     if save_tab_clicked:
                         try:
+                            spot_name_to_save = res.get("spot_name") or (", ".join([s["name"] for s in res.get("selected_spots", [])]) if res.get("selected_spots") else res.get("primary_spot", {}).get("name", "Tourist Destination"))
+                            category_to_save = res.get("category") or (", ".join(list(dict.fromkeys([s.get("category", "heritage") for s in res.get("selected_spots", [])]))) if res.get("selected_spots") else res.get("primary_spot", {}).get("category", "heritage"))
                             save_payload = {
                                 "travel_date": res.get("travel_start"),
-                                "spot_name": res.get("primary_spot", {}).get("name", "Tourist Destination"),
+                                "spot_name": spot_name_to_save,
                                 "district": res.get("selected_district"),
-                                "category": res.get("primary_spot", {}).get("category", "heritage"),
+                                "category": category_to_save,
                                 "season": res.get("predicted_climate", {}).get("season", "Winter"),
                                 "transport": str(res.get("transport_mode", "car")).lower(),
                                 "travelers": res.get("num_travelers", 1),
