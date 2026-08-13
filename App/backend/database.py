@@ -120,7 +120,6 @@ def save_trip_record(trip_data: dict) -> bool:
                 supabase.table(table_name).insert(record).execute()
                 saved_supabase = True
                 print(f"[SUCCESS] Saved trip record to Supabase ('{table_name}' table)!")
-                break
             except Exception as e:
                 print(f"[INFO] Supabase insert to '{table_name}' skipped: {e}")
 
