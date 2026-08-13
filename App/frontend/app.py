@@ -2161,19 +2161,30 @@ elif selected_page == "Smart Trip Planner":
                 </div>
             """, unsafe_allow_html=True)
 
-            res_tabs = st.tabs([
+            tab_options = [
                 "📊 Overview",
                 "🗺️ Smart Route & Map",
                 "👥 Crowd Forecast",
                 "🌦️ Climate & Weather",
                 "💰 Budget Breakdown",
                 "💾 Save & Export"
-            ])
+            ]
+
+            if "active_result_tab" not in st.session_state or st.session_state["active_result_tab"] not in tab_options:
+                st.session_state["active_result_tab"] = "📊 Overview"
+
+            selected_result_tab = st.radio(
+                "Result Navigation",
+                options=tab_options,
+                key="active_result_tab",
+                horizontal=True,
+                label_visibility="collapsed"
+            )
 
             # ----------------------------------------------
             # TAB 1: OVERVIEW
             # ----------------------------------------------
-            with res_tabs[0]:
+            if selected_result_tab == "📊 Overview":
                 all_spots_display = res.get("spot_name") or (", ".join([s["name"] for s in res.get("selected_spots", [])]) if res.get("selected_spots") else res.get("primary_spot", {}).get("name", ""))
                 st.markdown(f"""
                     <div class="glass-card" style="display: flex; align-items: center; justify-content: space-between;">
@@ -2320,7 +2331,7 @@ elif selected_page == "Smart Trip Planner":
             # ----------------------------------------------
             # TAB 2: SMART ROUTE & MAP
             # ----------------------------------------------
-            with res_tabs[1]:
+            elif selected_result_tab == "🗺️ Smart Route & Map":
                 st.markdown("<h3 style='color: #F8FAFC;'>🗺️ Smart Interactive GIS Route Map</h3>", unsafe_allow_html=True)
                 st.markdown("<p style='color: #94A3B8; font-size: 0.9rem;'>Interactive map showing your selected tourist spots connected by route sequence, along with categorized real nearby amenities.</p>", unsafe_allow_html=True)
 
@@ -2493,9 +2504,11 @@ elif selected_page == "Smart Trip Planner":
                             if "current_lat" in st.session_state: del st.session_state["current_lat"]
                             if "current_lon" in st.session_state: del st.session_state["current_lon"]
                             if "user_current_location" in st.session_state: del st.session_state["user_current_location"]
-                            if "user_lat" in st.query_params: del st.query_params["user_lat"]
-                            if "user_lon" in st.query_params: del st.query_params["user_lon"]
-                            st.rerun()
+                            if "user_lat" in st.session_state: del st.session_state["user_lat"]
+                            if "user_lon" in st.session_state: del st.session_state["user_lon"]
+                            current_lat = None
+                            current_lon = None
+                            is_location_available = False
 
                 st.markdown("##### 📍 Or Enter Coordinates Manually (Recommended)")
                 col_m1, col_m2, col_m3 = st.columns([2, 2, 1])
@@ -2510,7 +2523,9 @@ elif selected_page == "Smart Trip Planner":
                         st.session_state["current_lon"] = float(m_lon_in)
                         st.session_state["user_lat"] = float(m_lat_in)
                         st.session_state["user_lon"] = float(m_lon_in)
-                        st.rerun()
+                        current_lat = float(m_lat_in)
+                        current_lon = float(m_lon_in)
+                        is_location_available = True
 
                 # Status & Temporary Debug Information Display
                 if is_location_available:
@@ -3001,7 +3016,7 @@ elif selected_page == "Smart Trip Planner":
             # ----------------------------------------------
             # TAB 3: CROWD FORECAST (PERCENTAGE / INDEX DISPLAY)
             # ----------------------------------------------
-            with res_tabs[2]:
+            elif selected_result_tab == "👥 Crowd Forecast":
                 st.markdown("<h3 style='color: #F8FAFC;'>👥 Visitor Crowd Forecast per Spot</h3>", unsafe_allow_html=True)
                 st.markdown("<p style='color: #94A3B8; font-size: 0.9rem;'>Crowd density index predicted using XGBoost visitor model telemetry.</p>", unsafe_allow_html=True)
 
@@ -3022,7 +3037,7 @@ elif selected_page == "Smart Trip Planner":
             # ----------------------------------------------
             # TAB 4: CLIMATE & WEATHER
             # ----------------------------------------------
-            with res_tabs[3]:
+            elif selected_result_tab == "🌦️ Climate & Weather":
                 st.markdown("<h3 style='color: #F8FAFC;'>🌦️ PyTorch Climate Neural Network Forecast</h3>", unsafe_allow_html=True)
                 cl = res.get("predicted_climate", {})
 
@@ -3183,7 +3198,7 @@ elif selected_page == "Smart Trip Planner":
             # ----------------------------------------------
             # TAB 5: BUDGET BREAKDOWN
             # ----------------------------------------------
-            with res_tabs[4]:
+            elif selected_result_tab == "💰 Budget Breakdown":
                 st.markdown("<h3 style='color: #F8FAFC;'>💰 Itemized Travel Budget Breakdown</h3>", unsafe_allow_html=True)
                 st.markdown("<p style='color: #94A3B8; font-size: 0.9rem;'>Calculated via Multi-Output Regressor trained on budget dataset.</p>", unsafe_allow_html=True)
 
@@ -3205,7 +3220,7 @@ elif selected_page == "Smart Trip Planner":
             # ----------------------------------------------
             # TAB 6: SAVE & EXPORT
             # ----------------------------------------------
-            with res_tabs[5]:
+            elif selected_result_tab == "💾 Save & Export":
                 st.markdown("<h3 style='color: #F8FAFC;'>💾 Save & Export Trip Plan</h3>", unsafe_allow_html=True)
                 st.markdown("<p style='color: #94A3B8; font-size: 0.95rem;'>Save your itinerary to Supabase cloud database or export a PDF summary report.</p>", unsafe_allow_html=True)
 
