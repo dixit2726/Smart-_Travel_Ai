@@ -23,4 +23,14 @@ load_dotenv(BASE_DIR / ".env")
 load_dotenv(PROJECT_ROOT / ".env")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "")
+
+# Fallback to Streamlit Cloud secrets if running on Streamlit Community Cloud
+if not SUPABASE_URL or not SUPABASE_KEY:
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            SUPABASE_URL = SUPABASE_URL or st.secrets.get("SUPABASE_URL", "") or st.secrets.get("supabase", {}).get("SUPABASE_URL", "")
+            SUPABASE_KEY = SUPABASE_KEY or st.secrets.get("SUPABASE_KEY", "") or st.secrets.get("supabase", {}).get("SUPABASE_KEY", "")
+    except Exception:
+        pass

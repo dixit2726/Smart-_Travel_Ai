@@ -469,7 +469,7 @@ FASTAPI_URL = BACKEND_API_URL
 @st.cache_data(ttl=60, show_spinner=False)
 def check_backend_status():
     try:
-        r = requests.get(f"{BACKEND_API_URL}/", timeout=0.5)
+        r = requests.get(f"{BACKEND_API_URL}/", timeout=3.0)
         return r.status_code == 200
     except Exception:
         return False
