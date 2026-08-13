@@ -101,16 +101,16 @@ except Exception:
 
 
 def fmt_currency(val) -> str:
-    """Format numeric values as Indian Rupee string with proper ₹ symbol."""
+    """Format numeric values as Indian Rupee string using 'Rs.' to ensure clean PDF rendering without black square glyph boxes."""
     try:
         amt = float(val)
         if math.isnan(amt):
-            return "₹0"
+            return "Rs. 0"
         if amt == int(amt):
-            return f"₹{int(amt):,}"
-        return f"₹{amt:,.2f}"
+            return f"Rs. {int(amt):,}"
+        return f"Rs. {amt:,.2f}"
     except (ValueError, TypeError):
-        return "₹0"
+        return "Rs. 0"
 
 
 def generate_trip_pdf(res: dict) -> bytes:
