@@ -2497,20 +2497,20 @@ elif selected_page == "Smart Trip Planner":
                             if "user_lon" in st.query_params: del st.query_params["user_lon"]
                             st.rerun()
 
-                with st.expander("📍 Or Enter Coordinates Manually (Optional)", expanded=False):
-                    col_m1, col_m2, col_m3 = st.columns([2, 2, 1])
-                    with col_m1:
-                        m_lat_in = st.number_input("Latitude", value=float(current_lat) if current_lat else 17.385040, format="%.6f", key="man_lat_input")
-                    with col_m2:
-                        m_lon_in = st.number_input("Longitude", value=float(current_lon) if current_lon else 78.486671, format="%.6f", key="man_lon_input")
-                    with col_m3:
-                        st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
-                        if st.button("Set Location", key="set_manual_coords_btn"):
-                            st.session_state["current_lat"] = float(m_lat_in)
-                            st.session_state["current_lon"] = float(m_lon_in)
-                            st.session_state["user_lat"] = float(m_lat_in)
-                            st.session_state["user_lon"] = float(m_lon_in)
-                            st.rerun()
+                st.markdown("##### 📍 Or Enter Coordinates Manually (Recommended)")
+                col_m1, col_m2, col_m3 = st.columns([2, 2, 1])
+                with col_m1:
+                    m_lat_in = st.number_input("Latitude", value=float(current_lat) if current_lat else 17.385040, format="%.6f", key="man_lat_input")
+                with col_m2:
+                    m_lon_in = st.number_input("Longitude", value=float(current_lon) if current_lon else 78.486671, format="%.6f", key="man_lon_input")
+                with col_m3:
+                    st.markdown("<div style='height: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button("Set Location", key="set_manual_coords_btn", use_container_width=True):
+                        st.session_state["current_lat"] = float(m_lat_in)
+                        st.session_state["current_lon"] = float(m_lon_in)
+                        st.session_state["user_lat"] = float(m_lat_in)
+                        st.session_state["user_lon"] = float(m_lon_in)
+                        st.rerun()
 
                 # Status & Temporary Debug Information Display
                 if is_location_available:
