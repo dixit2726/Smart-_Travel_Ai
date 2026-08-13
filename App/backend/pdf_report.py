@@ -113,21 +113,26 @@ def fmt_currency(val) -> str:
         return "Rs. 0"
 
 
+def clean_pdf_data(obj):
+    """Recursively converts any Unicode Rupee symbol (₹) to 'Rs.' and °C to 'deg C' across all fields."""
+    if isinstance(obj, str):
+        s = obj.replace("₹", "Rs. ").replace("°C", " deg C").replace("°", " deg ")
+        return s
+    elif isinstance(obj, dict):
+        return {k: clean_pdf_data(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [clean_pdf_data(v) for v in obj]
+    return obj
+
+
 def generate_trip_pdf(res: dict) -> bytes:
     """
-    Generates a professional PDF report matching the EXACT approved order & data requirements:
-    1. Header (Smart Tourism AI)
-    2. Trip Overview (Duration calculated from travel_start and travel_end)
-    3. Climate & Weather Forecast (Day-by-Day exact inclusive dates)
-    4. Crowd Level
-    5. Route Summary (No 35km fallback)
-    6. Nearby Location Details (No cost, no fake 4.5 rating, no fake 0.0 km, no ATM/parking as hospitals)
-    7. Budget Estimation (MUST BE LAST)
-    8. AI Disclaimer
-    9. Final Footer
+    Generates a professional PDF report matching the EXACT approved order & data requirements.
     """
     if not isinstance(res, dict):
         res = {}
+
+    res = clean_pdf_data(res)
 
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(
