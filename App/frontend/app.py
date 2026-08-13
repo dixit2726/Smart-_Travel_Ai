@@ -474,9 +474,12 @@ def check_backend_status():
     except Exception:
         return False
 
-# =====================================
-# Navigation Sidebar
-# =====================================
+# Check if button click requested programmatic navigation
+manual_select = None
+if st.session_state.get("nav_planner", False):
+    manual_select = 2
+    st.session_state["nav_planner"] = False
+
 with st.sidebar:
     if APP_LOGO_PATH.exists():
         st.image(str(APP_LOGO_PATH), use_container_width=True)
@@ -486,7 +489,9 @@ with st.sidebar:
         menu_title=None,
         options=["Home", "Project Overview", "Smart Trip Planner", "My Predictions / Saved Trips"],
         icons=["house-door-fill", "journal-text", "compass-fill", "clock-history"],
-        default_index=2 if st.session_state.get("nav_planner", False) else 0,
+        default_index=0,
+        manual_select=manual_select,
+        key="main_app_nav_menu",
         styles={
             "container": {"padding": "0!important", "background-color": "transparent"},
             "icon": {"color": "#38BDF8", "font-size": "1.1rem"},
@@ -531,11 +536,6 @@ with st.sidebar:
         st.markdown(f"**Budget Model**: {b_stat}")
         st.markdown(f"**Encoders**: {e_stat}")
         st.markdown(f"**Scalers**: {s_stat}")
-
-
-# Reset nav_planner session flag after reading
-if st.session_state.get("nav_planner", False):
-    st.session_state["nav_planner"] = False
 
 
 # =====================================
