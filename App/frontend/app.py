@@ -2162,7 +2162,8 @@ elif selected_page == "Smart Trip Planner":
                 "🗺️ Smart Route & Map",
                 "👥 Crowd Forecast",
                 "🌦️ Climate & Weather",
-                "💰 Budget Breakdown"
+                "💰 Budget Breakdown",
+                "💾 Save & Export"
             ])
 
             # ----------------------------------------------
@@ -3191,6 +3192,85 @@ elif selected_page == "Smart Trip Planner":
                 st.plotly_chart(fig_b, use_container_width=True)
 
                 st.table(b_df)
+
+            # ----------------------------------------------
+            # TAB 6: SAVE & EXPORT
+            # ----------------------------------------------
+            with res_tabs[5]:
+                st.markdown("<h3 style='color: #F8FAFC;'>💾 Save & Export Trip Plan</h3>", unsafe_allow_html=True)
+                st.markdown("<p style='color: #94A3B8; font-size: 0.95rem;'>Save your itinerary to Supabase cloud database or export a PDF summary report.</p>", unsafe_allow_html=True)
+
+                col_exp1, col_exp2 = st.columns(2)
+
+                with col_exp1:
+                    st.markdown("""
+                        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 20px; min-height: 140px;">
+                            <h4 style="color: #38BDF8; margin: 0 0 6px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                                💾 Save Trip to Account
+                            </h4>
+                            <p style="color: #94A3B8; font-size: 0.88rem; margin: 0 0 12px 0;">
+                                Persist this complete trip plan to your saved trips history in Supabase cloud database.
+                            </p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+                    save_tab_clicked = st.button("💾 Save Trip Record", key="save_trip_tab_btn", use_container_width=True)
+
+                    if save_tab_clicked:
+                        try:
+                            save_payload = {
+                                "travel_date": res.get("travel_start"),
+                                "spot_name": res.get("primary_spot", {}).get("name", "Tourist Destination"),
+                                "district": res.get("selected_district"),
+                                "category": res.get("primary_spot", {}).get("category", "heritage"),
+                                "season": res.get("predicted_climate", {}).get("season", "Winter"),
+                                "transport": str(res.get("transport_mode", "car")).lower(),
+                                "travelers": res.get("num_travelers", 1),
+                                "days": res.get("duration_days", 1),
+                                "predicted_visitors": res.get("avg_visitors", 0),
+                                "estimated_budget": res.get("estimated_budget", 0.0),
+                                "budget_breakdown": res.get("budget_breakdown", {}),
+                                "weather_condition": res.get("predicted_climate", {}).get("weather_condition", ""),
+                                "temp_max": res.get("predicted_climate", {}).get("temperature_max", 0.0),
+                                "temp_min": res.get("predicted_climate", {}).get("temperature_min", 0.0),
+                                "rainfall": res.get("predicted_climate", {}).get("rainfall_mm", 0.0),
+                                "recommendations": res.get("recommendations", [])
+                            }
+                            saved_ok = save_trip_record(save_payload)
+                            if saved_ok:
+                                st.success("✅ Trip saved successfully to Supabase!")
+                            else:
+                                st.error("❌ Unable to save trip. Please try again.")
+                        except Exception as e:
+                            st.error(f"❌ Unable to save trip: {e}")
+
+                with col_exp2:
+                    st.markdown("""
+                        <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(52, 211, 153, 0.25); border-radius: 14px; padding: 20px; min-height: 140px;">
+                            <h4 style="color: #34D399; margin: 0 0 6px 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+                                📄 Export PDF Summary
+                            </h4>
+                            <p style="color: #94A3B8; font-size: 0.88rem; margin: 0 0 12px 0;">
+                                Download an itemized PDF report containing full route map, crowd forecasts, and budget breakdown.
+                            </p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
+                    try:
+                        pdf_bytes = generate_trip_pdf(res)
+                        district_filename = str(res.get("selected_district", "Trip")).replace(" ", "_")
+                        filename = f"Smart_Tourism_Trip_Plan_{district_filename}.pdf"
+
+                        st.download_button(
+                            label="📄 Download PDF Report",
+                            data=pdf_bytes,
+                            file_name=filename,
+                            mime="application/pdf",
+                            key="download_pdf_tab_btn",
+                            use_container_width=True
+                        )
+                    except Exception as e:
+                        st.error(f"❌ Unable to generate PDF report: {e}")
 
 
 
